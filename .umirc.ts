@@ -12,7 +12,7 @@ export default defineConfig({
       path: '/user',
       name: '用户管理',
       access: 'system_user',
-      icon: 'smile',
+      icon: 'user',
       component: './user/index',
     },
   ],

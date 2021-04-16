@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/lib/table';
 import UserModal from './components/UserModal';
 import { useUserTable } from '@/hooks/user';
 import { Access, useAccess } from 'umi';
+import WrapPageContainer from '@/components/WrapPageContainer';
 
 export default () => {
   const { tableProps, userOperate, modalStatus, confirmLoading, initialValuesRef, modalOperate } = useUserTable();
@@ -41,8 +42,8 @@ export default () => {
   );
 
   return (
-    <>
-      <Space>
+    <WrapPageContainer>
+      <Space size={[8, 16]} wrap>
         <Access accessible={access.system_user_add}>
           <Button type="primary" onClick={modalOperate.create}>
             新增
@@ -58,6 +59,6 @@ export default () => {
         onCancel={modalOperate.close}
         confirmLoading={confirmLoading}
       />
-    </>
+    </WrapPageContainer>
   );
 };

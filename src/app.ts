@@ -1,9 +1,11 @@
 import { RunTimeLayoutConfig, history, RequestConfig } from 'umi';
-import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-layout';
+import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { message, notification } from 'antd';
 import classnames from 'classnames';
 import type { ResponseError } from 'umi-request';
 import Styles from './global.less';
+import { queryCurrent } from './services/user';
+import { allMenus } from './services/menu';
 
 message.config({
   maxCount: 1,
@@ -18,40 +20,37 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
   fetchPermissions?: () => Promise<any>;
 }> {
-  // const fetchUserInfo = async () => {
-  //   try {
-  //     const currentUser = await queryCurrent();
-  //     return currentUser;
-  //   } catch (error) {
-  //     history.push('/user/login');
-  //   }
-  //   return undefined;
-  // };
+  const fetchUserInfo = async () => {
+    try {
+      const res = await queryCurrent();
+      return res.data;
+    } catch (error) {
+      history.push('/login');
+    }
+    return undefined;
+  };
 
-  // const fetchPermissions = async () => {
-  //   const res = await allMenus();
-  //   return res.data || [];
-  // };
+  const fetchPermissions = async () => {
+    const res = await allMenus();
+    return res.data || [];
+  };
 
-  // 如果是登录页面，不执行
-  // if (history.location.pathname !== '/user/login') {
-  //   const [currentUser, menuData] = await Promise.all<API.CurrentUser, any[]>([
-  //     handlePromise(queryCurrent()),
-  //     handlePromise(getPermissions()),
-  //   ]);
-  //   // 生成一个Promise对象的数组
-  //   return {
-  //     fetchUserInfo,
-  //     fetchPermissions,
-  //     currentUser,
-  //     menuData,
-  //     settings: {},
-  //   };
-  // }
+  if (history.location.pathname !== '/setting/login') {
+    // 如果是登录页面，不执行
+    const [currentUser, menuData] = await Promise.all<API.CurrentUser, any[]>([fetchUserInfo(), fetchPermissions()]);
+    // 生成一个Promise对象的数组
+    return {
+      fetchUserInfo,
+      fetchPermissions,
+      currentUser,
+      menuData,
+      settings: {},
+    };
+  }
+
   return {
-    // fetchUserInfo,
-    // fetchPermissions,
-    settings: {},
+    fetchUserInfo,
+    fetchPermissions,
   };
 }
 
@@ -86,16 +85,26 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     logo: false,
     className: classnames({
       [Styles.layout]: true,
-      [Styles.fromQiankun]: isFromQianKun,
+      // [Styles.fromQiankun]: isFromQianKun,
     }),
   };
 };
 
+interface IQianKunProps {
+  setUserPermissions: (params: { currentUser: any; menuData: any }) => void;
+  fetchUserInfo: () => Promise<any>;
+  fetchPermissions: () => Promise<any>;
+  currentUser: any;
+  menuData: any;
+  from: string;
+}
+
 export const qiankun = {
   // 应用加载之前
-  async bootstrap(props: any) {
-    isFromQianKun = props?.from === 'qiankun';
-    console.log('app1 bootstrap', props);
+  async bootstrap(props?: IQianKunProps) {
+    if (props) {
+      isFromQianKun = props.from === 'qiankun';
+    }
   },
   // 应用 render 之前触发
   async mount(props: any) {
@@ -174,7 +183,7 @@ export const request: RequestConfig = {
       }
       if (res.statusCode === 401) {
         localStorage.removeItem('token');
-        history.push('/user/login');
+        history.push('/login');
       }
       return response;
     },
