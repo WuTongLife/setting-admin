@@ -4,6 +4,12 @@ declare namespace API {
     data?: T;
     [key: string]: any;
   }
+
+  interface IResponseTable<T> {
+    list: T[];
+    total: number;
+  }
+
   export interface IPaginationParams<T = any> {
     current: number;
     pageSize: number;

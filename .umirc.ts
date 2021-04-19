@@ -5,9 +5,15 @@ export default defineConfig({
     type: 'none',
   },
   hash: true,
+  history: { type: 'hash' },
   antd: {},
   routes: [
-    { path: '/', component: '@/pages/index' },
+    {
+      path: '/login',
+      exact: true,
+      component: '@/pages/login/index',
+      layout: false,
+    },
     {
       path: '/user',
       name: '用户管理',
@@ -15,27 +21,30 @@ export default defineConfig({
       icon: 'user',
       component: './user/index',
     },
+    { path: '/', component: '@/pages/index' },
   ],
   fastRefresh: {},
+  dynamicImport: {},
   qiankun: {
     slave: {},
   },
   locale: {
     antd: false,
   },
+  theme: {
+    '@primary-color': '#3977b1',
+  },
   layout: {
     navTheme: 'light',
     locale: false,
-    primaryColor: '#1890ff',
     layout: 'mix',
     contentWidth: 'Fluid',
-    fixedHeader: false,
+    fixedHeader: true,
     fixSiderbar: true,
     title: '系统管理',
     pwa: false,
     iconfontUrl: '',
     headerHeight: 48,
-    splitMenus: false,
   },
   proxy: {
     '/api': {

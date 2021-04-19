@@ -1,5 +1,17 @@
 import { request } from 'umi';
 
+export type LoginParamsType = {
+  username: string;
+  password: string;
+};
+
+export async function fakeAccountLogin(params: LoginParamsType) {
+  return request('/api/user/login', {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function query() {
   return request<API.CurrentUser[]>('/api/users');
 }

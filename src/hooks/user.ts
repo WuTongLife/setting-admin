@@ -1,15 +1,13 @@
 import { userCreate, userDelete, userPageList, userUpdate } from '@/services/user';
-import { useAntdTable, useBoolean } from 'ahooks';
+import { useBoolean } from 'ahooks';
 import { message } from 'antd';
 import { useMemo, useRef } from 'react';
+import useProTable from './useProTable';
 
 export const useUserTable = () => {
-  const { tableProps, search, refresh } = useAntdTable<any, Entity.UserEntity>(
-    (params: any) => userPageList(params).then((res) => res.data),
-    {
-      defaultPageSize: 10,
-    },
-  );
+  const tableProps = useProTable<Entity.UserEntity>({ tableAPI: userPageList });
+  const refresh = tableProps.actionRef?.current?.reload;
+
   // 修改时的用户信息
   const initialValuesRef = useRef<Entity.UserEntity>();
   // 新增修改时弹窗的状态
@@ -26,7 +24,7 @@ export const useUserTable = () => {
           if (res.code === 200) {
             message.success('新增成功');
             modalStatus[1].setFalse();
-            refresh();
+            if (refresh) refresh();
           }
         })
         .finally(() => {
@@ -41,7 +39,7 @@ export const useUserTable = () => {
           if (res.code === 200) {
             message.success('修改成功');
             modalStatus[1].setFalse();
-            refresh();
+            if (refresh) refresh();
           }
           submitLoading[1].setFalse();
         })
@@ -55,7 +53,7 @@ export const useUserTable = () => {
         userDelete(params).then((res) => {
           if (res.code === 200) {
             message.success('删除成功');
-            refresh();
+            if (refresh) refresh();
           } else {
             message.error(res.message);
           }
@@ -90,7 +88,6 @@ export const useUserTable = () => {
 
   return {
     tableProps,
-    search,
     userOperate,
     modalStatus,
     confirmLoading: submitLoading[0],

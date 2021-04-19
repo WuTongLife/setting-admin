@@ -21,7 +21,9 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "@ant-design/pro-layout": "^6.5.0",
+    "@ant-design/pro-table": "^2.34.2",
     "@umijs/preset-react": "1.x",
     "ahooks": "^2.10.0",
     "antd": "^4.15.1",
