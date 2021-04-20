@@ -21,23 +21,23 @@ export async function queryCurrent() {
 }
 
 export async function queryNotices(): Promise<any> {
-  return request<{ data: API.NoticeIconData[] }>('/api/notices');
+  return request<API.Response<API.NoticeIconData[]>>('/api/notices');
 }
 
 export async function userPageList({ current, pageSize, filters }: API.IPaginationParams) {
-  return request(`/api/user/${current}/${pageSize}/list`, {
+  return request<API.Response>(`/api/user/${current}/${pageSize}/list`, {
     method: 'POST',
     data: filters,
   });
 }
 
 export async function userDelete(id: number) {
-  return request(`/api/user/delete/${id}`, { method: 'DELETE' });
+  return request<API.Response>(`/api/user/delete/${id}`, { method: 'DELETE' });
 }
 
 export async function userCreate(user: any) {
-  return request(`/api/user/create`, { method: 'POST', data: user });
+  return request<API.Response>(`/api/user/create`, { method: 'POST', data: user });
 }
 export async function userUpdate(user: any) {
-  return request(`/api/user/update`, { method: 'POST', data: user });
+  return request<API.Response>(`/api/user/update`, { method: 'POST', data: user });
 }

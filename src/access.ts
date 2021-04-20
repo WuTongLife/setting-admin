@@ -8,6 +8,9 @@ const initAuth: MenuAuth = {
   system_user_detail: false,
   system_user_delete: false,
   system_menu: false,
+  system_menu_add: false,
+  system_menu_edit: false,
+  system_menu_delete: false,
 };
 
 // src/access.ts
@@ -56,6 +59,9 @@ interface MenuAuth {
 
   /** 菜单管理 */
   system_menu: boolean;
+  system_menu_add: boolean;
+  system_menu_edit: boolean;
+  system_menu_delete: boolean;
 
   [key: string]: boolean;
 }

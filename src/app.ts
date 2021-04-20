@@ -9,6 +9,7 @@ import { allMenus } from './services/menu';
 
 message.config({
   maxCount: 1,
+  top: 64,
 });
 
 let isFromQianKun = false;

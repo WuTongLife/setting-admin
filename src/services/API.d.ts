@@ -98,6 +98,26 @@ declare namespace Entity {
     /** 排序 */
     orderNum: number;
 
+    menuId: number;
+
     child?: MenuEntity[];
+  }
+
+  interface RoleEntity {
+    roleId: number;
+    roleName: string;
+    remark: string;
+    deptId: number;
+    createDate: string;
+    delFlag: boolean;
+  }
+
+  interface DeptEntity {
+    deptId: number;
+    parentId: number;
+    name: string;
+    levelCode: string;
+    orderNum: number;
+    delFlag: boolean;
   }
 }

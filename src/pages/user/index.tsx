@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { Button, Input, Space, Table } from 'antd';
+import { useMemo } from 'react';
+import { Button, Input } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { SearchOutlined } from '@ant-design/icons';
 import UserModal from './components/UserModal';
 import { useUserTable } from '@/hooks/user';
@@ -44,16 +44,20 @@ export default () => {
         title: '操作',
         width: '200px',
         valueType: 'option',
-        renderText: (record) => {
+        renderText: (_, record) => {
           return (
-            <Space>
+            <>
               <Access accessible={access.system_user_edit}>
-                <a onClick={() => modalOperate.update(record)}>编辑</a>
+                <Button size="small" type="link" onClick={() => modalOperate.update(record)}>
+                  编辑
+                </Button>
               </Access>
               <Access accessible={access.system_user_delete}>
-                <a onClick={() => userOperate.delete(record.user_id)}>删除</a>
+                <Button size="small" type="link" danger onClick={() => userOperate.delete(record.id)}>
+                  删除
+                </Button>
               </Access>
-            </Space>
+            </>
           );
         },
       },
@@ -67,6 +71,7 @@ export default () => {
         rowKey="id"
         columns={columns}
         {...tableProps}
+        options={{ fullScreen: true }}
         toolBarRender={() => [
           <Access accessible={access.system_user_add}>
             <Button type="primary" onClick={modalOperate.create}>

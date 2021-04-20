@@ -21,6 +21,19 @@ export default defineConfig({
       icon: 'user',
       component: './user/index',
     },
+    {
+      path: '/permission',
+      name: '权限管理',
+      icon: 'user',
+      routes: [
+        {
+          path: '/permission/menu',
+          name: '菜单管理',
+          access: 'system_menu',
+          component: './permissions/menu',
+        },
+      ],
+    },
     { path: '/', component: '@/pages/index' },
   ],
   fastRefresh: {},

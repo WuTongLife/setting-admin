@@ -17,47 +17,39 @@ export const useUserTable = () => {
 
   /** 用户新增，修改，删除操作 */
   const userOperate = useMemo(() => {
-    const create = (params: Entity.UserEntity) => {
+    const create = async (params: Entity.UserEntity) => {
       submitLoading[1].setTrue();
-      return userCreate(params)
-        .then((res) => {
-          if (res.code === 200) {
-            message.success('新增成功');
-            modalStatus[1].setFalse();
-            if (refresh) refresh();
-          }
-        })
-        .finally(() => {
-          submitLoading[1].setFalse();
-        });
+      const res = await userCreate(params);
+      if (res.statusCode === 200) {
+        message.success('新增成功');
+        modalStatus[1].setFalse();
+        if (refresh) refresh();
+      }
+      submitLoading[1].setFalse();
     };
-    const update = (params: Entity.UserEntity) => {
+
+    const update = async (params: Entity.UserEntity) => {
       submitLoading[1].setTrue();
       const newParams = { ...params, user_id: initialValuesRef.current?.id };
-      return userUpdate(newParams)
-        .then((res) => {
-          if (res.code === 200) {
-            message.success('修改成功');
-            modalStatus[1].setFalse();
-            if (refresh) refresh();
-          }
-          submitLoading[1].setFalse();
-        })
-        .finally(() => {
-          submitLoading[1].setFalse();
-        });
+      const res = await userUpdate(newParams);
+      if (res.statusCode === 200) {
+        message.success('修改成功');
+        modalStatus[1].setFalse();
+        if (refresh) refresh();
+      }
+      submitLoading[1].setFalse();
     };
 
     return {
-      delete: (params: any) =>
-        userDelete(params).then((res) => {
-          if (res.code === 200) {
-            message.success('删除成功');
-            if (refresh) refresh();
-          } else {
-            message.error(res.message);
-          }
-        }),
+      delete: async (params: any) => {
+        const res = await userDelete(params);
+        if (res.statusCode === 200) {
+          message.success('删除成功');
+          if (refresh) refresh();
+        } else {
+          message.error(res.message);
+        }
+      },
       submit: (params: Entity.UserEntity) => {
         if (initialValuesRef.current) {
           update(params);
@@ -73,12 +65,10 @@ export const useUserTable = () => {
     const [, { setFalse, setTrue }] = modalStatus;
     return {
       create: setTrue,
+      close: setFalse,
       update: (record: Entity.UserEntity) => {
         initialValuesRef.current = record;
         setTrue();
-      },
-      close: () => {
-        setFalse();
       },
       afterClose: () => {
         initialValuesRef.current = undefined;

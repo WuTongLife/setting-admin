@@ -23,7 +23,6 @@ const useProTable = <T>({
   actionRef: React.MutableRefObject<ActionType | undefined>;
 } & ProTableProps<T, {}> => {
   const actionRef = useRef<ActionType>();
-
   const initTable: fetchTable<T> = async ({ pageSize = 10, current = 1, keyword, ...other }, sort, filter) => {
     console.log(filter, sort, other);
     const response = await tableAPI({ pageSize, current, filters: { ...other, keyword, sort } });
