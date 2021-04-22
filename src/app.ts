@@ -1,4 +1,4 @@
-import { RunTimeLayoutConfig, history, RequestConfig } from 'umi';
+import { RunTimeLayoutConfig, RequestConfig, history as umiHistory } from 'umi';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { message, notification } from 'antd';
 import classnames from 'classnames';
@@ -9,6 +9,10 @@ import { allMenus } from './services/menu';
 
 message.config({
   maxCount: 1,
+  top: 64,
+});
+
+notification.config({
   top: 64,
 });
 
@@ -26,7 +30,8 @@ export async function getInitialState(): Promise<{
       const res = await queryCurrent();
       return res.data;
     } catch (error) {
-      history.push('/login');
+      history.pushState(null, '', '/#/login');
+      umiHistory.go(0);
     }
     return undefined;
   };
@@ -36,7 +41,7 @@ export async function getInitialState(): Promise<{
     return res.data || [];
   };
 
-  if (history.location.pathname !== '/setting/login') {
+  if (umiHistory.location.pathname !== '/setting/login') {
     // 如果是登录页面，不执行
     const [currentUser, menuData] = await Promise.all<API.CurrentUser, any[]>([fetchUserInfo(), fetchPermissions()]);
     // 生成一个Promise对象的数组
@@ -86,6 +91,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     ...(isFromQianKun ? {} : {}),
     logo: false,
     siderWidth: 208,
+    iconfontUrl: '//at.alicdn.com/t/font_2488774_9jz3m630uwq.js',
     className: classnames({
       [Styles.layout]: true,
       [Styles.fromQiankun]: isFromQianKun,
@@ -186,7 +192,8 @@ export const request: RequestConfig = {
       }
       if (res.statusCode === 401) {
         localStorage.removeItem('token');
-        history.push('/login');
+        history.pushState(null, '', '/#/login');
+        umiHistory.go(0);
       }
       return response;
     },

@@ -3,26 +3,20 @@ import WrapPageContainer from '@/components/WrapPageContainer';
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { useAccess, useModel } from 'umi';
-import MenuModal from './components/MenuModal';
 import { AccessButton, AccessLinkButton, AccessPopconfirmButton } from '@/components/Button';
+import RoleModal from './components/RoleModal';
 
-const MenuPage = () => {
-  const { treeMenu, operate, modalOperate, initialValuesRef, confirmLoading, submitOtherParams } = useModel('menu');
+const RolePage = () => {
+  const { roleData, operate, modalOperate, initialValuesRef, confirmLoading } = useModel('role');
+  const { treeDept } = useModel('department');
   const access = useAccess();
-  const createSubMenu = (parentId: number) => {
-    submitOtherParams.current = { parentId };
-    modalOperate.setTrue();
-  };
 
-  const columns = useMemo((): ProColumns<IUtil.TreeData<Entity.MenuEntity>>[] => {
+  const columns = useMemo((): ProColumns<Entity.RoleEntity>[] => {
     return [
-      { title: '菜单名称', dataIndex: 'name', key: 'name' },
-      { title: '路由', dataIndex: 'route', key: 'route' },
-      { title: '图标', dataIndex: 'icon', key: 'icon' },
-      { title: '菜单类型', dataIndex: 'typeTxt', key: 'typeTxt' },
-      { title: '后端权限码', dataIndex: 'perms', key: 'perms' },
-      { title: '前端权限码', dataIndex: 'code', key: 'code' },
-      { title: '排序', dataIndex: 'orderNum', key: 'orderNum' },
+      { title: '角色名称', dataIndex: 'roleName', key: 'roleName' },
+      { title: '所属部门', dataIndex: ['dept', 'name'], key: 'dept' },
+      { title: '备注', dataIndex: 'remark', key: 'remark' },
+      { title: '创建时间', width: 200, dataIndex: 'createDate', key: 'createDate' },
       {
         title: '操作',
         width: '200px',
@@ -30,15 +24,12 @@ const MenuPage = () => {
         renderText: (_, record) => {
           return (
             <>
-              <AccessLinkButton accessible={access.system_menu_add} onClick={() => createSubMenu(record.menuId)}>
-                新增
-              </AccessLinkButton>
               <AccessLinkButton accessible={access.system_menu_edit} onClick={() => modalOperate.update(record)}>
                 编辑
               </AccessLinkButton>
               <AccessPopconfirmButton
                 accessible={access.system_menu_delete}
-                onConfirm={() => operate.delete(record.id)}
+                onConfirm={() => operate.delete(record.roleId)}
               >
                 删除
               </AccessPopconfirmButton>
@@ -54,8 +45,8 @@ const MenuPage = () => {
       <ProTable
         search={false}
         columns={columns}
-        dataSource={treeMenu}
-        rowKey="menuId"
+        dataSource={roleData}
+        rowKey="roleId"
         bordered
         toolBarRender={() => [
           <AccessButton accessible={access.system_menu_add} type="primary" onClick={modalOperate.setTrue}>
@@ -63,7 +54,8 @@ const MenuPage = () => {
           </AccessButton>,
         ]}
       />
-      <MenuModal
+      <RoleModal
+        treeDept={treeDept}
         initialValues={initialValuesRef.current}
         onFinish={operate.submit}
         afterClose={modalOperate.afterClose}
@@ -75,4 +67,4 @@ const MenuPage = () => {
   );
 };
 
-export default MenuPage;
+export default RolePage;

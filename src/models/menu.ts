@@ -12,12 +12,12 @@ const useMenu = () => {
   const [loading, loadingAction] = useBoolean(false);
   // 修改时的用户信息
   const initialValuesRef = useRef<Entity.MenuEntity>();
-  const modalOperate = useFormModal(initialValuesRef);
+  const [modalOperate] = useFormModal(initialValuesRef);
   // 提交按钮的状态
   const [confirmLoading, submitAction] = useBoolean(false);
   const submitOtherParams = useRef<Partial<Entity.MenuEntity>>({ parentId: 0 });
 
-  const fetchAllRoles = useCallback(async () => {
+  const fetchAllMenus = useCallback(async () => {
     loadingAction.setTrue();
     const res = await allMenus();
     if (res.statusCode === 200) {
@@ -35,7 +35,7 @@ const useMenu = () => {
           message.success('创建成功');
           modalOperate.setFalse();
           submitOtherParams.current = { parentId: 0 };
-          fetchAllRoles();
+          fetchAllMenus();
         }
         submitAction.setFalse();
       } catch (error) {
@@ -49,7 +49,7 @@ const useMenu = () => {
         if (res.statusCode === 200) {
           message.success('修改成功');
           modalOperate.setFalse();
-          fetchAllRoles();
+          fetchAllMenus();
         }
         submitAction.setFalse();
       } catch (error) {
@@ -68,14 +68,14 @@ const useMenu = () => {
         const res = await deleteMenu(id);
         if (res.statusCode === 200) {
           message.success('删除成功');
-          fetchAllRoles();
+          fetchAllMenus();
         }
       },
     };
   }, []);
 
   useEffect(() => {
-    fetchAllRoles();
+    fetchAllMenus();
   }, []);
 
   return { treeMenu, loading, modalOperate, operate, initialValuesRef, confirmLoading, submitOtherParams };

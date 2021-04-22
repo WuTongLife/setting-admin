@@ -28,10 +28,12 @@
     "ahooks": "^2.10.0",
     "antd": "^4.15.1",
     "classnames": "^2.3.1",
+    "react-custom-scrollbars": "^4.2.1",
     "umi": "^3.4.8"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
+    "@types/react-custom-scrollbars": "^4.0.7",
     "@types/react-dom": "^17.0.0",
     "@umijs/plugin-qiankun": "^2.24.1",
     "@umijs/test": "^3.4.8",

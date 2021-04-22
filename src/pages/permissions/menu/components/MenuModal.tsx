@@ -1,11 +1,9 @@
-import React from 'react';
 import { Form } from 'antd';
 import type { ModalProps } from 'antd/lib/modal';
-import { FormItemInput, FormItemInputNumber, FormItemInputPassword, FormItemRadio } from '@/components/BaseForm';
+import { FormItemInput, FormItemInputNumber, FormItemRadio } from '@/components/BaseForm';
 import { FormModal } from '@/components/CommonModal';
-import { phonePattern } from '@/utils/validate';
 
-interface IUserModalProps extends ModalProps {
+interface IMenuModalProps extends ModalProps {
   onFinish: (values: any) => void;
   initialValues: any;
 }
@@ -15,7 +13,7 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
-const MenuModal = ({ onFinish, ...props }: IUserModalProps) => {
+const MenuModal = ({ onFinish, ...props }: IMenuModalProps) => {
   const [form] = Form.useForm();
   return (
     <FormModal

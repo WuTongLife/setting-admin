@@ -24,13 +24,25 @@ export default defineConfig({
     {
       path: '/permission',
       name: '权限管理',
-      icon: 'user',
+      icon: 'icon-permission',
       routes: [
         {
           path: '/permission/menu',
           name: '菜单管理',
           access: 'system_menu',
           component: './permissions/menu',
+        },
+        {
+          path: '/permission/dept',
+          name: '部门管理',
+          access: 'system_dept',
+          component: './permissions/department',
+        },
+        {
+          path: '/permission/role',
+          name: '角色管理',
+          access: 'system_role',
+          component: './permissions/role',
         },
       ],
     },

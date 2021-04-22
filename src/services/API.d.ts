@@ -103,6 +103,12 @@ declare namespace Entity {
     child?: MenuEntity[];
   }
 
+  interface DepartmentEntity {
+    deptId: number;
+    name: string;
+    parentId: number;
+  }
+
   interface RoleEntity {
     roleId: number;
     roleName: string;
