@@ -15,30 +15,30 @@ const DepartmentPage = () => {
     submitOtherParams,
     initialValuesRef,
     confirmLoading,
-    assignPermisModal,
-    assignPermisConfirm,
+    assignModal,
   } = useModel('department');
   const { treeMenu } = useModel('menu');
-
   const access = useAccess();
   const createSubMenu = (parentId: number) => {
     submitOtherParams.current = { parentId };
     modalOperate.setTrue();
   };
 
-  const columns = useMemo((): ProColumns<IUtil.TreeData<Entity.MenuEntity>>[] => {
+  const columns = useMemo<ProColumns<IUtil.TreeData<Entity.DeptEntity>>[]>(() => {
     return [
       { title: '部门名称', width: 400, dataIndex: 'name', key: 'name' },
       { title: '部门编码', dataIndex: 'code', key: 'code' },
       { title: '排序', dataIndex: 'orderNum', key: 'orderNum' },
       {
         title: '操作',
-        width: '200px',
+        width: '300px',
         valueType: 'option',
         renderText: (_, record) => {
           return (
             <>
-              <AccessLinkButton accessible>分配权限</AccessLinkButton>
+              <AccessLinkButton accessible onClick={assignModal.modalOperate.setTrue}>
+                分配权限
+              </AccessLinkButton>
               <AccessLinkButton accessible onClick={() => createSubMenu(record.menuId)}>
                 新增
               </AccessLinkButton>
@@ -80,7 +80,12 @@ const DepartmentPage = () => {
         onCancel={modalOperate.setFalse}
         confirmLoading={confirmLoading}
       />
-      <AssignPermissionModal treeData={treeMenu} />
+      <AssignPermissionModal
+        treeData={treeMenu}
+        confirmLoading={assignModal.confirmLoading}
+        visible={assignModal.visible}
+        onCancel={assignModal.onCancel}
+      />
     </WrapPageContainer>
   );
 };

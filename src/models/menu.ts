@@ -59,7 +59,8 @@ const useMenu = () => {
     return {
       submit: (params: Entity.MenuEntity) => {
         if (initialValuesRef.current) {
-          update(Object.assign({ ...initialValuesRef.current }, params));
+          const { menuId, parentId } = initialValuesRef.current;
+          update(Object.assign(params, { menuId, parentId }));
         } else {
           create(Object.assign(params, submitOtherParams.current));
         }
@@ -78,7 +79,16 @@ const useMenu = () => {
     fetchAllMenus();
   }, []);
 
-  return { treeMenu, loading, modalOperate, operate, initialValuesRef, confirmLoading, submitOtherParams };
+  return {
+    treeMenu,
+    loading,
+    modalOperate,
+    operate,
+    initialValuesRef,
+    confirmLoading,
+    submitOtherParams,
+    reload: fetchAllMenus,
+  };
 };
 
 export default useMenu;

@@ -6,6 +6,7 @@ import type { ResponseError } from 'umi-request';
 import Styles from './global.less';
 import { queryCurrent } from './services/user';
 import { allMenus } from './services/menu';
+import { scriptUrl } from './components/IconFont';
 
 message.config({
   maxCount: 1,
@@ -61,7 +62,6 @@ export async function getInitialState(): Promise<{
 }
 
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
-  console.log('layout', isFromQianKun);
   return {
     // rightContentRender: () => <RightContent />,
     // disableContentMargin: false,
@@ -91,7 +91,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     ...(isFromQianKun ? {} : {}),
     logo: false,
     siderWidth: 208,
-    iconfontUrl: '//at.alicdn.com/t/font_2488774_9jz3m630uwq.js',
+    iconfontUrl: scriptUrl,
     className: classnames({
       [Styles.layout]: true,
       [Styles.fromQiankun]: isFromQianKun,

@@ -18,7 +18,7 @@ export default defineConfig({
       path: '/user',
       name: '用户管理',
       access: 'system_user',
-      icon: 'user',
+      icon: 'icon-user',
       component: './user/index',
     },
     {

@@ -23,8 +23,8 @@ const AssignPermissionModal = ({ treeData, ...props }: IAssignPermissionProps) =
   };
 
   return (
-    <Modal title="分配权限" {...props}>
-      <Tree checkable showLine={{ showLeafIcon: false }} treeData={getTreeData(treeData)} />
+    <Modal title="分配权限" {...props} maskClosable={false}>
+      <Tree checkable showLine={{ showLeafIcon: false }} defaultExpandAll treeData={getTreeData(treeData)} />
     </Modal>
   );
 };

@@ -16,13 +16,13 @@ const useFormModal = <T>(
       visible,
       ...operate,
       update: (record: T) => {
-        if (initialValuesRef?.current) {
+        if (initialValuesRef) {
           initialValuesRef.current = record;
         }
         operate.setTrue();
       },
-      afterClose: () => {
-        if (initialValuesRef?.current) {
+      afterClose: (delay: number = 200) => {
+        if (initialValuesRef) {
           initialValuesRef.current = undefined;
         }
       },

@@ -1,13 +1,23 @@
 import React, { useMemo } from 'react';
+import { useAccess, useModel } from 'umi';
 import WrapPageContainer from '@/components/WrapPageContainer';
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { useAccess, useModel } from 'umi';
 import MenuModal from './components/MenuModal';
 import { AccessButton, AccessLinkButton, AccessPopconfirmButton } from '@/components/Button';
+import IconFont from '@/components/IconFont';
 
 const MenuPage = () => {
-  const { treeMenu, operate, modalOperate, initialValuesRef, confirmLoading, submitOtherParams } = useModel('menu');
+  const {
+    treeMenu,
+    operate,
+    modalOperate,
+    initialValuesRef,
+    confirmLoading,
+    submitOtherParams,
+    reload,
+    loading,
+  } = useModel('menu');
   const access = useAccess();
   const createSubMenu = (parentId: number) => {
     submitOtherParams.current = { parentId };
@@ -16,10 +26,16 @@ const MenuPage = () => {
 
   const columns = useMemo((): ProColumns<IUtil.TreeData<Entity.MenuEntity>>[] => {
     return [
-      { title: '菜单名称', dataIndex: 'name', key: 'name' },
-      { title: '路由', dataIndex: 'route', key: 'route' },
-      { title: '图标', dataIndex: 'icon', key: 'icon' },
-      { title: '菜单类型', dataIndex: 'typeTxt', key: 'typeTxt' },
+      { title: '菜单名称', width: 300, dataIndex: 'name', key: 'name' },
+      { title: '路由', width: 300, dataIndex: 'route', key: 'route' },
+      {
+        title: '图标',
+        width: 100,
+        dataIndex: 'icon',
+        key: 'icon',
+        renderText: (v?: string) => (v?.startsWith('icon') ? <IconFont type={v} /> : null),
+      },
+      { title: '菜单类型', width: 120, dataIndex: 'typeTxt', key: 'typeTxt' },
       { title: '后端权限码', dataIndex: 'perms', key: 'perms' },
       { title: '前端权限码', dataIndex: 'code', key: 'code' },
       { title: '排序', dataIndex: 'orderNum', key: 'orderNum' },
@@ -38,7 +54,7 @@ const MenuPage = () => {
               </AccessLinkButton>
               <AccessPopconfirmButton
                 accessible={access.system_menu_delete}
-                onConfirm={() => operate.delete(record.id)}
+                onConfirm={() => operate.delete(record.menuId)}
               >
                 删除
               </AccessPopconfirmButton>
@@ -55,6 +71,8 @@ const MenuPage = () => {
         search={false}
         columns={columns}
         dataSource={treeMenu}
+        options={{ reload }}
+        loading={loading}
         rowKey="menuId"
         bordered
         toolBarRender={() => [

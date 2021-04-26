@@ -8,7 +8,7 @@ interface IFormModalProps extends ModalProps {
   initialValues?: any;
 }
 
-const FormModal: FC<IFormModalProps> = ({ form, initialValues, visible, ...props }) => {
+const FormModal: FC<IFormModalProps> = ({ form, initialValues, visible, afterClose, ...props }) => {
   useEffect(() => {
     if (form) {
       if (visible && initialValues) {

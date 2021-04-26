@@ -4,19 +4,20 @@ import { allDepartment, createDepartment, deleteDepartment, updateDepartment } f
 import { toTreeData } from '@/utils/common';
 import { useBoolean } from 'ahooks';
 import { message } from 'antd';
+import { useModal } from '@/hooks/common';
 
-const toMenuTreeData = toTreeData<Entity.DepartmentEntity>({ primaryKey: 'deptId' });
+const toMenuTreeData = toTreeData<Entity.DeptEntity>({ primaryKey: 'deptId' });
 
 export default () => {
-  const [treeDept, setTreeDept] = useState<IUtil.TreeData<Entity.DepartmentEntity>[]>([]);
+  const [treeDept, setTreeDept] = useState<IUtil.TreeData<Entity.DeptEntity>[]>([]);
   const [loading, loadingAction] = useBoolean(false);
   // 修改时的用户信息
-  const initialValuesRef = useRef<Entity.DepartmentEntity>();
+  const initialValuesRef = useRef<Entity.DeptEntity>();
   // 新增修改弹窗状态和提交按钮状态
   const [modalOperate, confirmOperate] = useFormModal(initialValuesRef);
-  const submitOtherParams = useRef<Partial<Entity.DepartmentEntity>>({ parentId: 0 });
+  const submitOtherParams = useRef<Partial<Entity.DeptEntity>>({ parentId: 0 });
   // 分配权限弹窗状态和提交按钮状态
-  const [assignPermisModal, assignPermisConfirm] = useFormModal();
+  const assignModal = useModal();
 
   const fetchAllDepts = useCallback(async () => {
     loadingAction.setTrue();
@@ -28,7 +29,7 @@ export default () => {
   }, []);
 
   const operate = useMemo(() => {
-    const create = async (menu: Entity.DepartmentEntity) => {
+    const create = async (menu: Entity.DeptEntity) => {
       confirmOperate.setTrue();
       try {
         const res = await createDepartment(menu);
@@ -43,7 +44,7 @@ export default () => {
         confirmOperate.setFalse();
       }
     };
-    const update = async (menu: Entity.DepartmentEntity) => {
+    const update = async (menu: Entity.DeptEntity) => {
       confirmOperate.setTrue();
       try {
         const res = await updateDepartment(menu);
@@ -58,7 +59,7 @@ export default () => {
       }
     };
     return {
-      submit: (params: Entity.DepartmentEntity) => {
+      submit: (params: Entity.DeptEntity) => {
         if (initialValuesRef.current) {
           update(Object.assign({ ...initialValuesRef.current }, params));
         } else {
@@ -88,7 +89,6 @@ export default () => {
     initialValuesRef,
     confirmLoading: confirmOperate.confirmLoading,
     submitOtherParams,
-    assignPermisModal,
-    assignPermisConfirm,
+    assignModal,
   };
 };
