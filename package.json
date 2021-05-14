@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "setting-admin",
+  "name": "setting",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",

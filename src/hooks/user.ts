@@ -75,7 +75,6 @@ export const useUserTable = () => {
       },
     };
   }, [modalStatus]);
-
   return {
     tableProps,
     userOperate,

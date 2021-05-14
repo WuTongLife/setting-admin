@@ -31,8 +31,12 @@ export async function getInitialState(): Promise<{
       const res = await queryCurrent();
       return res.data;
     } catch (error) {
-      history.pushState(null, '', '/#/login');
-      umiHistory.go(0);
+      if (isFromQianKun) {
+        history.pushState(null, '', '/#/login');
+        umiHistory.go(0);
+      } else {
+        umiHistory.push('/login');
+      }
     }
     return undefined;
   };
@@ -192,8 +196,12 @@ export const request: RequestConfig = {
       }
       if (res.statusCode === 401) {
         localStorage.removeItem('token');
-        history.pushState(null, '', '/#/login');
-        umiHistory.go(0);
+        if (isFromQianKun) {
+          history.pushState(null, '', '/#/login');
+          umiHistory.go(0);
+        } else {
+          umiHistory.push('/login');
+        }
       }
       return response;
     },
