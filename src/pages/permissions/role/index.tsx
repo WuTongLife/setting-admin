@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import WrapPageContainer from '@/components/WrapPageContainer';
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
@@ -7,9 +7,13 @@ import { AccessButton, AccessLinkButton, AccessPopconfirmButton } from '@/compon
 import RoleModal from './components/RoleModal';
 
 const RolePage = () => {
-  const { roleData, operate, modalOperate, initialValuesRef, confirmLoading } = useModel('role');
+  const { roleData, fetchAllRoles, operate, modalOperate, initialValuesRef, confirmLoading } = useModel('role');
   const { treeDept } = useModel('department');
   const access = useAccess();
+
+  useEffect(() => {
+    fetchAllRoles();
+  }, []);
 
   const columns = useMemo((): ProColumns<Entity.RoleEntity>[] => {
     return [

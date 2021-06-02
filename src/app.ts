@@ -46,17 +46,19 @@ export async function getInitialState(): Promise<{
     return res.data || [];
   };
 
-  if (umiHistory.location.pathname !== '/setting/login') {
-    // 如果是登录页面，不执行
-    const [currentUser, menuData] = await Promise.all<API.CurrentUser, any[]>([fetchUserInfo(), fetchPermissions()]);
-    // 生成一个Promise对象的数组
-    return {
-      fetchUserInfo,
-      fetchPermissions,
-      currentUser,
-      menuData,
-      settings: {},
-    };
+  if (localStorage.getItem('token')) {
+    if (umiHistory.location.pathname !== '/setting/login') {
+      // 如果是登录页面，不执行
+      const [currentUser, menuData] = await Promise.all<API.CurrentUser, any[]>([fetchUserInfo(), fetchPermissions()]);
+      // 生成一个Promise对象的数组
+      return {
+        fetchUserInfo,
+        fetchPermissions,
+        currentUser,
+        menuData,
+        settings: {},
+      };
+    }
   }
 
   return {

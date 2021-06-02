@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAccess, useModel } from 'umi';
 import WrapPageContainer from '@/components/WrapPageContainer';
 import ProTable from '@ant-design/pro-table';
@@ -23,6 +23,10 @@ const MenuPage = () => {
     submitOtherParams.current = { parentId };
     modalOperate.setTrue();
   };
+
+  useEffect(() => {
+    reload();
+  }, []);
 
   const columns = useMemo((): ProColumns<IUtil.TreeData<Entity.MenuEntity>>[] => {
     return [

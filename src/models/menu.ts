@@ -75,10 +75,6 @@ const useMenu = () => {
     };
   }, []);
 
-  useEffect(() => {
-    fetchAllMenus();
-  }, []);
-
   return {
     treeMenu,
     loading,

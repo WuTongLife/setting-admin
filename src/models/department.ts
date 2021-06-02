@@ -77,15 +77,12 @@ export default () => {
     };
   }, []);
 
-  useEffect(() => {
-    fetchAllDepts();
-  }, []);
-
   return {
     treeDept,
     loading,
     modalOperate,
     operate,
+    fetchAllDepts,
     initialValuesRef,
     confirmLoading: confirmOperate.confirmLoading,
     submitOtherParams,

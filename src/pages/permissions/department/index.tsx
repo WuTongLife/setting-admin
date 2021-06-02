@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import WrapPageContainer from '@/components/WrapPageContainer';
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
@@ -16,9 +16,15 @@ const DepartmentPage = () => {
     initialValuesRef,
     confirmLoading,
     assignModal,
+    fetchAllDepts,
   } = useModel('department');
   const { treeMenu } = useModel('menu');
   const access = useAccess();
+
+  useEffect(() => {
+    fetchAllDepts();
+  }, []);
+
   const createSubMenu = (parentId: number) => {
     submitOtherParams.current = { parentId };
     modalOperate.setTrue();

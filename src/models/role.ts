@@ -69,11 +69,7 @@ const useRole = () => {
     };
   }, []);
 
-  useEffect(() => {
-    fetchAllRoles();
-  }, []);
-
-  return { roleData, loading, modalOperate, operate, initialValuesRef, confirmLoading };
+  return { fetchAllRoles, roleData, loading, modalOperate, operate, initialValuesRef, confirmLoading };
 };
 
 export default useRole;
