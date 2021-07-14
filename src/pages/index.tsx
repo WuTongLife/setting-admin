@@ -1,9 +1,3 @@
-import styles from './index.less';
-
 export default function IndexPage() {
-  return (
-    <div>
-      <h1 className={styles.title}>setting</h1>
-    </div>
-  );
+  return <div>setting</div>;
 }
